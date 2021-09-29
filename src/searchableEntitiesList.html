@@ -1,0 +1,21 @@
+<template>
+  <div class="entity-selector-container slds-p-horizontal_small">
+    <div>
+      <lightning-input name="enter-search" label="something" type="search" class="slds-p-bottom_medium"
+        onchange={filterEntities}></lightning-input>
+    </div>
+
+    <span class="slds-p-bottom_medium">Total entities: {totalCount}</span>
+
+    <lightning-spinner alternative-text="Loading" size="large" if:true={loadingEntities}></lightning-spinner>
+
+    <div if:false={loadingEntities} class="scrollable">
+      <lightning-vertical-navigation onselect={handleSelect} class="navigation">
+        <template for:each={navigationItems} for:item="navItem">
+          <lightning-vertical-navigation-item key={navItem.name} label={navItem.label} name={navItem.name}>
+          </lightning-vertical-navigation-item>
+        </template>
+      </lightning-vertical-navigation>
+    </div>
+  </div>
+</template>
