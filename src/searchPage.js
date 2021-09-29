@@ -1,6 +1,6 @@
 import {LightningElement} from "lwc";
-import askCall from "@salesforce/apex/RestController.askCall";
-import extendAskCall from "@salesforce/apex/RestController.extendAskCall";
+import askCall from "./mockServer";
+import extendAskCall from "./mockServer";
 
 export default class SearchPage extends LightningElement {
     query = "";
@@ -14,6 +14,7 @@ export default class SearchPage extends LightningElement {
 
     allEntitiesCopy = [];
     isTopResults = true;
+
 
     handleSelect(evt) {
         let selectedEntity = evt.detail.name;
@@ -49,8 +50,7 @@ export default class SearchPage extends LightningElement {
             sobjectName: this.selectedEntity
         })
             .then((data) => {
-                let parse = JSON.parse(data);
-                this.computeCols(parse, false);
+                this.computeCols(data, false);
                 this.loadingResults = false;
             })
             .catch((error) => {
@@ -68,8 +68,7 @@ export default class SearchPage extends LightningElement {
             pageSize: this.pageSize
         })
             .then((data) => {
-                let parse = JSON.parse(data);
-                this.computeCols(parse, true);
+                this.computeCols(data, true);
                 this.loadingResults = false;
             })
             .catch((error) => {
@@ -120,4 +119,5 @@ export default class SearchPage extends LightningElement {
     get isScopedSearch() {
         return !this.isTopResults;
     }
+    
 }
