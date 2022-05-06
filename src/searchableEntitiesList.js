@@ -3,7 +3,7 @@ import {LightningElement, api} from "lwc";
 export default class SearchableEntitiesList extends LightningElement {
 
     @api
-    entities=[{name:"juan", label:"Juanka"}];
+    entities=[{apiName:"juan", labelPlural:"Juanka", count:10}];
 
     entityFilter = '';
 
@@ -22,7 +22,7 @@ export default class SearchableEntitiesList extends LightningElement {
     get navigationItems() {
         if (this.entityFilter && this.entityFilter.length > 0) {
             const regex = new RegExp(this.entityFilter, 'gmi'); //substring regex case insensitive
-            return this.entities.filter(e => e.label.match(regex));
+            return this.entities.filter(e => e.labelPlural.match(regex));
         }
         return this.entities;
     }
