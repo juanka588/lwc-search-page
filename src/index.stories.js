@@ -6,6 +6,4 @@ import SearchableEntitiesList from "./searchableEntitiesList";
 
 
 export const story = () => 
-//createElement("c-searchable-entities-list", { is: SearchableEntitiesList });
-
 createElement("c-search-page", { is: SearchPage });

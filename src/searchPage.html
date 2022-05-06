@@ -1,6 +1,6 @@
 <template>
   <div onkeyup={handleKeyUp} class="search-bar-container">
-    <lightning-input name="enter-search" label="something" type="search" class="search-bar slds-p-bottom_medium"
+    <lightning-input name="enter-search" label="Type your search query here" type="search" class="search-bar slds-p-bottom_medium"
       onchange={updateSearchTerm}></lightning-input>
   </div>
   <div class="slds-grid slds-gutters">
@@ -20,7 +20,14 @@
             <div class="slds-page-header slds-page-header_joined">
               <h2 class="slds-page-header__title">{bucket.label}</h2>
             </div>
-            <lightning-datatable key-field="id" data={bucket.data} hide-checkbox-column columns={bucket.fields}>
+            <lightning-datatable 
+            key-field="id" 
+            data={bucket.data} 
+            hide-checkbox-column 
+            columns={bucket.fields}
+            enable-infinite-loading
+            onloadmore={loadMoreData}
+            >
             </lightning-datatable>
           </div>
         </template>

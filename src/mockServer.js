@@ -1,780 +1,1639 @@
+export function askCall(query, entityName, offset, pageSize) {
+    return new Promise((resolve, reject) => {
 
-export default function askCall() {
-  return new Promise((resolve, reject) => {
-    resolve({
-      "keywordBasedAnswer": {
-        "buckets": [
-          {
-            "entityApiName": "Contact",
-            "records": [
-              {
-                "attributes": {
-                  "type": "Contact",
-                  "url": "/services/data/v54.0/sobjects/Contact/003xx000004WqknAAC"
-                },
-                "Id": "003xx000004WqknAAC",
-                "Name": "Avi Green",
-                "Account": {
-                  "attributes": {
-                    "type": "Account",
-                    "url": "/services/data/v54.0/sobjects/Account/001xx000003GkoLAAS"
-                  },
-                  "Name": "United Oil & Gas Corp.",
-                  "Site": null
-                },
-                "Phone": "(212) 842-5500",
-                "Email": "agreen@uog.com",
-                "Owner": {
-                  "attributes": {
-                    "type": "User",
-                    "url": "/services/data/v54.0/sobjects/User/005xx000001XJXxAAO"
-                  },
-                  "Alias": "UUser"
-                }
-              }
-            ]
-          }
-        ],
-        "entitiesPageInfo": {
-          "entities": [
+        const answer = serverResponse;
+
+        if (entityName) {
+            answer.keywordBasedAnswer.entities = answer.keywordBasedAnswer.entities.filter(e => e.apiName === entityName);
+        }
+        if (offset && pageSize) {
+            answer.keywordBasedAnswer.entities = answer.keywordBasedAnswer.entities.map(
+                e => e.searchResults = e.searchResults.slice(offset, offset + pageSize)
+            );
+        }
+
+        resolve(answer);
+    });
+}
+
+export function entityScope(query, offset, pageSize) {
+    return new Promise((resolve, reject) => {
+        const answer = [
             "Account",
             "Contact",
-            "User",
-            "Opportunity",
-            "ListView",
-            "UserRole",
-            "Group",
-            "Lead",
-            "EmailTemplate",
-            "WebLink",
-            "Profile",
-            "BusinessHours",
-            "ApexClass",
-            "Pricebook2",
-            "Product2",
-            "WorkBadgeDefinition",
             "Case",
-            "Solution",
-            "SlaProcess",
-            "Campaign",
-            "myCustomObj10__c",
-            "myCustomObj11__c",
-            "myCustomObj12__c",
-            "myCustomObj13__c",
-            "myCustomObj14__c",
-            "myCustomObj15__c",
-            "myCustomObj16__c",
-            "myCustomObj17__c",
-            "myCustomObj18__c",
-            "myCustomObj19__c",
-            "myCustomObj20__c",
-            "myCustomObj21__c",
-            "myCustomObj22__c",
-            "myCustomObj23__c",
-            "myCustomObj24__c",
-            "myCustomObj25__c",
-            "myCustomObj26__c",
-            "myCustomObj27__c",
-            "myCustomObj28__c",
-            "myCustomObj29__c",
-            "myCustomObj2__c",
-            "myCustomObj30__c",
-            "myCustomObj31__c",
-            "myCustomObj32__c",
-            "myCustomObj33__c",
-            "myCustomObj34__c",
-            "myCustomObj35__c",
-            "myCustomObj36__c",
-            "myCustomObj37__c",
-            "myCustomObj38__c",
-            "myCustomObj39__c",
-            "myCustomObj3__c",
-            "myCustomObj40__c",
-            "myCustomObj41__c",
-            "myCustomObj42__c",
-            "myCustomObj43__c",
-            "myCustomObj44__c",
-            "myCustomObj45__c",
-            "myCustomObj46__c",
-            "myCustomObj47__c",
-            "myCustomObj48__c",
-            "myCustomObj49__c",
-            "myCustomObj4__c",
-            "myCustomObj50__c",
-            "myCustomObj51__c",
-            "myCustomObj52__c",
-            "myCustomObj53__c",
-            "myCustomObj54__c",
-            "myCustomObj55__c",
-            "myCustomObj56__c",
-            "myCustomObj57__c",
-            "myCustomObj58__c",
-            "myCustomObj59__c",
-            "myCustomObj5__c",
-            "myCustomObj60__c",
-            "myCustomObj6__c",
-            "myCustomObj7__c",
-            "myCustomObj8__c",
-            "myCustomObj9__c"
-          ],
-          "offset": 0,
-          "pageSize": 0,
-          "subListEntities": []
-        },
-        "query": "\"green\""
-      },
-      "recommendedResultAnswer": {
-        "entityApiName": "Contact",
-        "query": "\"green\"",
-        "record": {
-          "attributes": {
-            "type": "Contact",
-            "url": "/services/data/v54.0/sobjects/Contact/003xx000004WqknAAC"
-          },
-          "Id": "003xx000004WqknAAC",
-          "Name": "Avi Green",
-          "Account": {
-            "attributes": {
-              "type": "Account",
-              "url": "/services/data/v54.0/sobjects/Account/001xx000003GkoLAAS"
-            },
-            "Name": "United Oil & Gas Corp.",
-            "Site": null
-          },
-          "Phone": "(212) 842-5500",
-          "Email": "agreen@uog.com",
-          "Owner": {
-            "attributes": {
-              "type": "User",
-              "url": "/services/data/v54.0/sobjects/User/005xx000001XJXxAAO"
-            },
-            "Alias": "UUser"
-          }
-        }
-      },
-      "searchEntityMetadata": {
-        "Account": {
-          "fields": [
-            {
-              "label": "Account ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Account Name",
-              "name": "Name",
-              "type": "string"
-            },
-            {
-              "label": "Account Site",
-              "name": "Site",
-              "type": "string"
-            },
-            {
-              "label": "Phone",
-              "name": "Phone",
-              "type": "phone"
-            },
-            {
-              "label": "Account Owner",
-              "name": "Owner.Alias",
-              "type": "reference"
-            }
-          ],
-          "label": "Account",
-          "labelPlural": "Accounts",
-          "theme": {
-            "color": "7F8DE1",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/account_60.png"
-          }
-        },
-        "Group": {
-          "fields": [
-            {
-              "label": "Group ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Name",
-              "name": "Name",
-              "type": "string"
-            }
-          ],
-          "label": "Group",
-          "labelPlural": "Group",
-          "theme": {
-            "color": "769ED9",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/orders_60.png"
-          }
-        },
-        "SlaProcess": {
-          "fields": [
-            {
-              "label": "Entitlement Process ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Entitlement Process Name",
-              "name": "Name",
-              "type": "string"
-            }
-          ],
-          "label": "Entitlement Process",
-          "labelPlural": "Entitlement Processes",
-          "theme": {
-            "color": "7E8BE4",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/entitlement_process_60.png"
-          }
-        },
-        "User": {
-          "fields": [
-            {
-              "label": "User ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Name",
-              "name": "Name",
-              "type": "string"
-            },
-            {
-              "label": "Title",
-              "name": "Title",
-              "type": "string"
-            },
-            {
-              "label": "Phone",
-              "name": "Phone",
-              "type": "phone"
-            },
-            {
-              "label": "Email",
-              "name": "Email",
-              "type": "email"
-            },
-            {
-              "label": "Photo",
-              "name": "SmallPhotoUrl",
-              "type": "url"
-            }
-          ],
-          "label": "User",
-          "labelPlural": "People",
-          "theme": {
-            "color": "65CAE4",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/user_60.png"
-          }
-        },
-        "Pricebook2": {
-          "fields": [
-            {
-              "label": "Price Book ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Price Book Name",
-              "name": "Name",
-              "type": "string"
-            },
-            {
-              "label": "Description",
-              "name": "Description",
-              "type": "string"
-            },
-            {
-              "label": "Last Modified Date",
-              "name": "LastModifiedDate",
-              "type": "datetime"
-            },
-            {
-              "label": "Active",
-              "name": "IsActive",
-              "type": "boolean"
-            }
-          ],
-          "label": "Price Book",
-          "labelPlural": "Price Books",
-          "theme": {
-            "color": "B781D3",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/pricebook_60.png"
-          }
-        },
-        "Product2": {
-          "fields": [
-            {
-              "label": "Product ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Product Name",
-              "name": "Name",
-              "type": "string"
-            },
-            {
-              "label": "Product Code",
-              "name": "ProductCode",
-              "type": "string"
-            },
-            {
-              "label": "Product Description",
-              "name": "Description",
-              "type": "textarea"
-            },
-            {
-              "label": "Product Family",
-              "name": "Family",
-              "type": "picklist"
-            }
-          ],
-          "label": "Product",
-          "labelPlural": "Products",
-          "theme": {
-            "color": "B781D3",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/product_60.png"
-          }
-        },
-        "BusinessHours": {
-          "fields": [
-            {
-              "label": "Business Hours ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Business Hours Name",
-              "name": "Name",
-              "type": "string"
-            }
-          ],
-          "label": "Business Hours",
-          "labelPlural": "Business Hours",
-          "theme": {
-            "color": "7DC37D",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/business_hours_60.png"
-          }
-        },
-        "WebLink": {
-          "fields": [
-            {
-              "label": "Custom Link ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Name",
-              "name": "Name",
-              "type": "string"
-            }
-          ],
-          "label": "Custom Button or Link",
-          "labelPlural": "Custom Buttons or Links",
-          "theme": {
-            "color": "d75143",
-            "iconUrl": null
-          }
-        },
-        "Profile": {
-          "fields": [
-            {
-              "label": "Profile ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Name",
-              "name": "Name",
-              "type": "string"
-            }
-          ],
-          "label": "Profile",
-          "labelPlural": "Profile",
-          "theme": {
-            "color": "d75143",
-            "iconUrl": null
-          }
-        },
-        "Contact": {
-          "fields": [
-            {
-              "label": "Contact ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Name",
-              "name": "Name",
-              "type": "string"
-            },
-            {
-              "label": "Account Name",
-              "name": "Account.Name",
-              "type": "reference"
-            },
-            {
-              "label": "Account Site",
-              "name": "Account.Site",
-              "type": "string"
-            },
-            {
-              "label": "Phone",
-              "name": "Phone",
-              "type": "phone"
-            },
-            {
-              "label": "Email",
-              "name": "Email",
-              "type": "email"
-            },
-            {
-              "label": "Contact Owner",
-              "name": "Owner.Alias",
-              "type": "reference"
-            }
-          ],
-          "label": "Contact",
-          "labelPlural": "Contacts",
-          "theme": {
-            "color": "A094ED",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/contact_60.png"
-          }
-        },
-        "Case": {
-          "fields": [
-            {
-              "label": "Case ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Case Number",
-              "name": "CaseNumber",
-              "type": "string"
-            },
-            {
-              "label": "Subject",
-              "name": "Subject",
-              "type": "string"
-            },
-            {
-              "label": "Status",
-              "name": "Status",
-              "type": "picklist"
-            },
-            {
-              "label": "Date/Time Opened",
-              "name": "CreatedDate",
-              "type": "datetime"
-            }
-          ],
-          "label": "Case",
-          "labelPlural": "Cases",
-          "theme": {
-            "color": "F2CF5B",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/case_60.png"
-          }
-        },
-        "ListView": {
-          "fields": [
-            {
-              "label": "List View ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "View Name",
-              "name": "Name",
-              "type": "string"
-            }
-          ],
-          "label": "List View",
-          "labelPlural": "List Views"
-        },
-        "Campaign": {
-          "fields": [
-            {
-              "label": "Campaign ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Campaign Name",
-              "name": "Name",
-              "type": "string"
-            },
-            {
-              "label": "Parent Campaign",
-              "name": "Parent.Name",
-              "type": "reference"
-            },
-            {
-              "label": "Type",
-              "name": "Type",
-              "type": "picklist"
-            },
-            {
-              "label": "Status",
-              "name": "Status",
-              "type": "picklist"
-            },
-            {
-              "label": "Start Date",
-              "name": "StartDate",
-              "type": "date"
-            },
-            {
-              "label": "End Date",
-              "name": "EndDate",
-              "type": "date"
-            },
-            {
-              "label": "Responses in Campaign",
-              "name": "NumberOfResponses",
-              "type": "int"
-            },
-            {
-              "label": "Campaign Owner",
-              "name": "Owner.Alias",
-              "type": "reference"
-            }
-          ],
-          "label": "Campaign",
-          "labelPlural": "Campaigns",
-          "theme": {
-            "color": "F49756",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/campaign_60.png"
-          }
-        },
-        "UserRole": {
-          "fields": [
-            {
-              "label": "Role ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Name",
-              "name": "Name",
-              "type": "string"
-            }
-          ],
-          "label": "Role",
-          "labelPlural": "Role",
-          "theme": {
-            "color": "769ED9",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/hierarchy_60.png"
-          }
-        },
-        "Opportunity": {
-          "fields": [
-            {
-              "label": "Opportunity ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Opportunity Name",
-              "name": "Name",
-              "type": "string"
-            },
-            {
-              "label": "Account Name",
-              "name": "Account.Name",
-              "type": "reference"
-            },
-            {
-              "label": "Account Site",
-              "name": "Account.Site",
-              "type": "string"
-            },
-            {
-              "label": "Stage",
-              "name": "StageName",
-              "type": "picklist"
-            },
-            {
-              "label": "Close Date",
-              "name": "CloseDate",
-              "type": "date"
-            },
-            {
-              "label": "Opportunity Owner",
-              "name": "Owner.Alias",
-              "type": "reference"
-            }
-          ],
-          "label": "Opportunity",
-          "labelPlural": "Opportunities",
-          "theme": {
-            "color": "FCB95B",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/opportunity_60.png"
-          }
-        },
-        "ApexClass": {
-          "fields": [
-            {
-              "label": "Class ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Name",
-              "name": "Name",
-              "type": "string"
-            }
-          ],
-          "label": "Apex Class",
-          "labelPlural": "Apex Classes",
-          "theme": {
-            "color": "d75143",
-            "iconUrl": null
-          }
-        },
-        "Lead": {
-          "fields": [
-            {
-              "label": "Lead ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Name",
-              "name": "Name",
-              "type": "string"
-            },
-            {
-              "label": "Title",
-              "name": "Title",
-              "type": "string"
-            },
-            {
-              "label": "Company",
-              "name": "Company",
-              "type": "string"
-            },
-            {
-              "label": "Phone",
-              "name": "Phone",
-              "type": "phone"
-            },
-            {
-              "label": "Mobile",
-              "name": "MobilePhone",
-              "type": "phone"
-            },
-            {
-              "label": "Email",
-              "name": "Email",
-              "type": "email"
-            },
-            {
-              "label": "Lead Status",
-              "name": "Status",
-              "type": "picklist"
-            }
-          ],
-          "label": "Lead",
-          "labelPlural": "Leads",
-          "theme": {
-            "color": "F88962",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/lead_60.png"
-          }
-        },
-        "WorkBadgeDefinition": {
-          "fields": [
-            {
-              "label": "Badge ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Badge Name",
-              "name": "Name",
-              "type": "string"
-            },
-            {
-              "label": "Description",
-              "name": "Description",
-              "type": "textarea"
-            },
-            {
-              "label": "Created By",
-              "name": "CreatedBy.Alias",
-              "type": "reference"
-            }
-          ],
-          "label": "Badge",
-          "labelPlural": "Badges",
-          "theme": {
-            "color": "CF5C60",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/thanks_60.png"
-          }
-        },
-        "EmailTemplate": {
-          "fields": [
-            {
-              "label": "Email Template ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Email Template Name",
-              "name": "Name",
-              "type": "string"
-            }
-          ],
-          "label": "Email Template",
-          "labelPlural": "Email Templates",
-          "theme": {
-            "color": "3C97DD",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/template_60.png"
-          }
-        },
-        "Solution": {
-          "fields": [
-            {
-              "label": "Solution ID",
-              "name": "Id",
-              "type": "id"
-            },
-            {
-              "label": "Solution Title",
-              "name": "SolutionName",
-              "type": "string"
-            },
-            {
-              "label": "Status",
-              "name": "Status",
-              "type": "picklist"
-            },
-            {
-              "label": "Author",
-              "name": "Owner.Alias",
-              "type": "reference"
-            },
-            {
-              "label": "Num Related Cases",
-              "name": "TimesUsed",
-              "type": "int"
-            },
-            {
-              "label": "Last Modified Date",
-              "name": "LastModifiedDate",
-              "type": "datetime"
-            }
-          ],
-          "label": "Solution",
-          "labelPlural": "Solutions",
-          "theme": {
-            "color": "8FC972",
-            "iconUrl": "https://butterpecan-aquarius-2-dev-ed.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/standard/solution_60.png"
-          }
-        }
-      }
+            "Another",
+            "Lead",
+            "Opportunity"
+        ];
+
+        resolve(answer.slice(offset, offset + pageSize));
     });
-  });
 }
+
+const serverResponse = {
+    "keywordBasedAnswer": {
+        "entities": [
+            {
+                "apiName": "Knowledge__kav",
+                "error": null,
+                "fieldsToReturn": [
+                    {
+                        "fieldApiName": "Title",
+                        "label": "Title",
+                        "type": "Text"
+                    },
+                    {
+                        "fieldApiName": "PublishStatus",
+                        "label": "Publication Status",
+                        "type": "Picklist"
+                    },
+                    {
+                        "fieldApiName": "Language",
+                        "label": "Language",
+                        "type": "Picklist"
+                    },
+                    {
+                        "fieldApiName": "UrlName",
+                        "label": "URL Name",
+                        "type": "Text"
+                    },
+                    {
+                        "fieldApiName": "Body__c",
+                        "label": "Body",
+                        "type": "Rich Text Area"
+                    }
+                ],
+                "filter": {
+                    "operands": [],
+                    "operator": ""
+                },
+                "label": "Knowledge",
+                "labelPlural": "Knowledge",
+                "orderBy": [],
+                "pageInfo": {
+                    "hasNextPage": true,
+                    "hasPreviousPage": true,
+                    "offset": 10,
+                    "pageSize": 43
+                },
+                "searchResults": [
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 985"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004ecAAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 985"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-985"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 984"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004ebAAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 984"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-984"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 983"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eaAAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 983"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-983"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 982"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eZAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 982"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-982"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 981"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eYAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 981"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-981"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 980"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eXAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 980"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-980"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 979"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eWAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 979"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-979"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 978"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eVAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 978"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-978"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 977"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eUAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 977"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-977"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 976"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eTAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 976"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-976"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 975"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eSAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 975"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-975"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 974"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eRAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 974"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-974"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 973"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eQAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 973"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-973"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 972"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004ePAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 972"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-972"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 971"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eOAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 971"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-971"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 970"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eNAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 970"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-970"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 969"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eMAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 969"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-969"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 968"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eLAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 968"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-968"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 967"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eKAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 967"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-967"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {
+                                "Title": "<mark>VPN</mark> Test 966"
+                            },
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eJAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 966"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-966"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eIAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 965"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-965"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eHAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 964"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-964"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eGAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 963"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-963"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eFAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 962"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-962"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eEAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 961"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-961"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eDAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 960"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-960"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eCAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 959"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-959"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eBAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 958"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-958"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004eAAAQ"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 957"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-957"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004e9AAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 956"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-956"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004e8AAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 955"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-955"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004e7AAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 954"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-954"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004e6AAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 953"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-953"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004e5AAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 952"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-952"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004e4AAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 951"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-951"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004e3AAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 950"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-950"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004e2AAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 949"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-949"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004e1AAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 948"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-948"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004e0AAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 947"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-947"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004dzAAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 946"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-946"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004dyAAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 945"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-945"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004dxAAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 944"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-944"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "metadata": {
+                            "fields": {},
+                            "promotedSearch": false,
+                            "spellCorrected": false
+                        },
+                        "record": {
+                            "fields": {
+                                "Id": {
+                                    "displayValue": null,
+                                    "value": "ka0xx00000004dwAAA"
+                                },
+                                "Title": {
+                                    "displayValue": null,
+                                    "value": "VPN Test 943"
+                                },
+                                "PublishStatus": {
+                                    "displayValue": "Published",
+                                    "value": "Online"
+                                },
+                                "Language": {
+                                    "displayValue": "English",
+                                    "value": "en_US"
+                                },
+                                "UrlName": {
+                                    "displayValue": null,
+                                    "value": "vpn-related-article-943"
+                                },
+                                "Body__c": {
+                                    "displayValue": null,
+                                    "value": "Must associate a topic later on"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "themeInfo": {
+                    "color": "F2CF5B",
+                    "iconUrl": "https://stream-orion-348-dev-ed.develop.my.localhost.sfdcdev.salesforce.com:6101/img/icon/t4v35/custom/custom55_60.png"
+                }
+            }
+        ],
+        "recommendedResult": null
+    },
+    "naturalLanguageAnswer": null,
+    "qnaAnswer": null,
+    "query": "VPN",
+    "queryId": "-1p2jymqiiixdg"
+};
