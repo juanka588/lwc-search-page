@@ -5,7 +5,7 @@
 * Capabilities:
   * Search Ask V55.0 integration
   * Pagination, aka incremental fetching
-  * Incremental search: navigate through searchable entities potentially mathig the user query
+  * Incremental search: navigate through searchable entities potentially matchig the user query
   * Sorting
 ----
 * Soon:
