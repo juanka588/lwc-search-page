@@ -13,7 +13,7 @@ export default class SearchPage extends LightningElement {
     selectedEntity;
     
     offset = 0;
-    pageSize = 20;
+    pageSize = 5;
 
     // Buffer of loaded entities regarding navigation of possible matching entities
     allEntitiesCopy = [];
@@ -34,6 +34,7 @@ export default class SearchPage extends LightningElement {
     displayTopResults() {
         this.selectedEntity = undefined;
         this.isTopResults = true;
+        this.doQuery();
     }
 
     handleKeyUp(evt) {
@@ -51,7 +52,7 @@ export default class SearchPage extends LightningElement {
         this.loadingResults = true;
         askCall({
             query: this.query,
-            sobjectName: this.selectedEntity
+            sobject: this.selectedEntity
         })
             .then((data) => {
                 this.inflateResults(data, false);
@@ -63,9 +64,9 @@ export default class SearchPage extends LightningElement {
             });
     }
 
-    loadMoreData(){
+    loadMoreData(evt){
         // TODO detect once the all records were fetched
-        console.log("fetching records");
+        console.log("fetching records: " + evt);
     }
 
     /**
@@ -92,21 +93,21 @@ export default class SearchPage extends LightningElement {
     inflateResults(parsedData, append) {
         // TODO support NLS too
         const keywordBasedAnswer = parsedData.keywordBasedAnswer;
-        const entities = keywordBasedAnswer.entities;
+        const entities = keywordBasedAnswer.searchObjects;
         if (entities.length > 0) {
             const cmpBuckets = [];
             for (let i = 0; i < entities.length; i++) {
                 const entity = entities[i];
                 
-                const data = this.transformSearchResults(entity.searchResults);
+                const data = entity.searchResults;
                 
                 
                  // also the adapter is needed and the numOfMatchingRecords based on the pageInfo
                 entity.count = data.length;
 
                 if(data.length > 0){
-                    entity.fieldsToReturn.forEach(f => f.fieldName = f.fieldApiName); // add field name property, this also must be done in the subcomponent adapter
-                    cmpBuckets.push({name: entity.apiName, label: entity.labelPlural, data: data, fields: entity.fieldsToReturn});
+                    entity.displayFields.forEach(f => f.fieldName = f.fieldApiName); // add field name property, this also must be done in the subcomponent adapter
+                    cmpBuckets.push({name: entity.objectApiName, label: entity.labelPlural, results: data, fields: entity.displayFields, pageInfo: entity.pageInfo});
                 }
             }
             if (append) {
@@ -127,45 +128,10 @@ export default class SearchPage extends LightningElement {
         }
     }
 
-    /**
-     * This code must be inside the component adapter wrapping the data table
-     */
-    transformSearchResults(searchResults){
-        const copyData = [];
-
-        for (let i = 0; i < searchResults.length; i++) {
-            const result = searchResults[i];
-
-            const fields = result.record.fields;
-            const highligths = result.metadata.fields;
-
-            const outData =
-            Object.fromEntries(
-                Object.entries(fields)
-                .map(e => {
-                    const key = e[0]; // fieldName
-                    let val = e[1].value;
-
-                    // TODO highlight must be handled
-                    if(highligths[key]){
-                        val = highligths[key];
-                    }
-
-                    if(e[1].displayValue){
-                        val = e[1].displayValue;
-                    }
-
-                    return [key, val]
-                })
-            );
-
-
-            copyData.push(outData);
-        }
-
-        return copyData;
-
+    sortResults(evt){
+        console.log("sorting by" + evt);
     }
+
 
     get hasMoreEntities() {
         return this.offset + this.objectApiNames.length < this.allEntitiesCopy.length;

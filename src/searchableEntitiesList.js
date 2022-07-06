@@ -3,7 +3,18 @@ import {LightningElement, api} from "lwc";
 export default class SearchableEntitiesList extends LightningElement {
 
     @api
-    entities=[{apiName:"juan", labelPlural:"Juanka", count:10}];
+    entities=[
+        {
+            objectApiName:"juan", 
+            labelPlural:"Juanka",
+            pageInfo:{
+                offset:10,
+                pageSize:5,
+                hasNextPage:true,
+                hasPreviuosPage:true,
+                minMatchingRecords:15
+            }
+    }];
 
     entityFilter = '';
 
