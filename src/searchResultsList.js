@@ -10,6 +10,9 @@ export default class SearchResultsList extends LightningElement {
   @api
   fields;
 
+  @api
+  pageInfo;
+
   _results = [];
 
   defaultSortDirection = "asc";
@@ -35,7 +38,7 @@ export default class SearchResultsList extends LightningElement {
           const result = searchResults[i];
 
           const fields = result.record.fields;
-          const highligths = result.metadata.fields;
+          const highligths = result.highlightInfo.fields;
 
           const outData =
           Object.fromEntries(

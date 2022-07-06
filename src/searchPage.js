@@ -13,7 +13,7 @@ export default class SearchPage extends LightningElement {
     selectedEntity;
     
     offset = 0;
-    pageSize = 20;
+    pageSize = 5;
 
     // Buffer of loaded entities regarding navigation of possible matching entities
     allEntitiesCopy = [];
@@ -93,7 +93,7 @@ export default class SearchPage extends LightningElement {
     inflateResults(parsedData, append) {
         // TODO support NLS too
         const keywordBasedAnswer = parsedData.keywordBasedAnswer;
-        const entities = keywordBasedAnswer.entities;
+        const entities = keywordBasedAnswer.searchObjects;
         if (entities.length > 0) {
             const cmpBuckets = [];
             for (let i = 0; i < entities.length; i++) {
@@ -106,8 +106,8 @@ export default class SearchPage extends LightningElement {
                 entity.count = data.length;
 
                 if(data.length > 0){
-                    entity.fieldsToReturn.forEach(f => f.fieldName = f.fieldApiName); // add field name property, this also must be done in the subcomponent adapter
-                    cmpBuckets.push({name: entity.apiName, label: entity.labelPlural, results: data, fields: entity.fieldsToReturn});
+                    entity.displayFields.forEach(f => f.fieldName = f.fieldApiName); // add field name property, this also must be done in the subcomponent adapter
+                    cmpBuckets.push({name: entity.objectApiName, label: entity.labelPlural, results: data, fields: entity.displayFields, pageInfo: entity.pageInfo});
                 }
             }
             if (append) {

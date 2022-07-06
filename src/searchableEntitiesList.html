@@ -13,9 +13,9 @@
       <lightning-vertical-navigation onselect={handleSelect} class="navigation">
         <template for:each={navigationItems} for:item="navItem">
           <lightning-vertical-navigation-item-badge 
-            key={navItem.apiName} 
+            key={navItem.objectApiName} 
             label={navItem.labelPlural} 
-            name={navItem.apiName}
+            name={navItem.objectApiName}
             badge-count={navItem.count}
           >
           </lightning-vertical-navigation-item-badge>

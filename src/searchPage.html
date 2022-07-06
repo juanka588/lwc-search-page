@@ -17,7 +17,16 @@
       <div>
         <template for:each={buckets} for:item="bucket" if:false={loadingResults}>
           <div key={bucket.name} class="slds-m-bottom_small">
-            <c-search-results-list name={bucket.name} label={bucket.label} results={bucket.results} fields={bucket.fields} onloadmore={loadMoreData} onsort={sortResults}></c-search-results-list>
+            <c-search-results-list 
+              name={bucket.name} 
+              label={bucket.label} 
+              results={bucket.results} 
+              fields={bucket.fields} 
+              page-info={bucket.pageInfo}
+              
+              onloadmore={loadMoreData} 
+              onsort={sortResults}
+            ></c-search-results-list>
           </div>
         </template>
         <lightning-spinner alternative-text="Loading" size="medium" if:true={loadingResults}></lightning-spinner>
