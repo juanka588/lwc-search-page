@@ -8,7 +8,6 @@ export default class SearchPage extends LightningElement {
 
     objectApiNames = [];
 
-
     // used for scoped queries
     selectedEntity;
     
@@ -52,7 +51,9 @@ export default class SearchPage extends LightningElement {
         this.loadingResults = true;
         askCall({
             query: this.query,
-            sobject: this.selectedEntity
+            sobject: this.selectedEntity,
+            offset: this.offset,
+            pageSize: this.pageSize
         })
             .then((data) => {
                 this.inflateResults(data, false);
@@ -66,7 +67,7 @@ export default class SearchPage extends LightningElement {
 
     loadMoreData(evt){
         // TODO detect once the all records were fetched
-        console.log("fetching records: " + evt);
+        console.log("fetching records: " + JSON.stringify(evt));
     }
 
     /**
@@ -91,9 +92,8 @@ export default class SearchPage extends LightningElement {
     }
 
     inflateResults(parsedData, append) {
-        // TODO support NLS too
-        const keywordBasedAnswer = parsedData.keywordBasedAnswer;
-        const entities = keywordBasedAnswer.searchObjects;
+        const answer = this.getObjectsToDisplay(parsedData);
+        const entities = answer.searchObjects;
         if (entities.length > 0) {
             const cmpBuckets = [];
             for (let i = 0; i < entities.length; i++) {
@@ -106,8 +106,7 @@ export default class SearchPage extends LightningElement {
                 entity.count = data.length;
 
                 if(data.length > 0){
-                    entity.displayFields.forEach(f => f.fieldName = f.fieldApiName); // add field name property, this also must be done in the subcomponent adapter
-                    cmpBuckets.push({name: entity.objectApiName, label: entity.labelPlural, results: data, fields: entity.displayFields, pageInfo: entity.pageInfo});
+                    cmpBuckets.push(entity);
                 }
             }
             if (append) {
@@ -128,10 +127,27 @@ export default class SearchPage extends LightningElement {
         }
     }
 
+    getObjectsToDisplay(parsedData){
+        if(parsedData.keywordBasedAnswer){
+            return parsedData.keywordBasedAnswer;
+        }
+
+        if(parsedData.naturalLanguageAnswer){
+            return parsedData.naturalLanguageAnswer;
+        }
+
+        if(parsedData.qnaAnswer){
+            return parsedData.qnaAnswer;
+        }
+
+        if(parsedData.recommendedResult){
+            return parsedData.recommendedResult;
+        }
+    }
+
     sortResults(evt){
         console.log("sorting by" + evt);
     }
-
 
     get hasMoreEntities() {
         return this.offset + this.objectApiNames.length < this.allEntitiesCopy.length;
