@@ -11,7 +11,7 @@ export function askCall(req) {
         if (entityName) {
             answer.keywordBasedAnswer.searchObjects = answer.keywordBasedAnswer.searchObjects.filter(e => e.objectApiName === entityName);
         }
-        if (offset && pageSize) {
+        if (entityName && offset && pageSize) {
             answer.keywordBasedAnswer.searchObjects = answer.keywordBasedAnswer.searchObjects.map(
                 e => e.searchResults = e.searchResults.slice(offset, offset + pageSize)
             );
@@ -144,30 +144,30 @@ const serverResponse = {
       },
       {
         "displayFields": [
-          {
+           {
             "fieldApiName": "CaseNumber",
             "label": "Case Number",
-            "type": "Auto Number"
+            "type": "string"
           },
           {
             "fieldApiName": "Subject",
             "label": "Subject",
-            "type": "Text"
+            "type": "string"
           },
           {
             "fieldApiName": "Status",
             "label": "Status",
-            "type": "Picklist"
+            "type": "picklist"
           },
           {
             "fieldApiName": "CreatedDate",
             "label": "Date/Time Opened",
-            "type": "Date/Time"
+            "type": "datetime"
           },
           {
             "fieldApiName": "Owner.NameOrAlias",
-            "label": null,
-            "type": null
+            "label": "Case Owner Alias",
+            "type": "string"
           }
         ],
         "error": null,
