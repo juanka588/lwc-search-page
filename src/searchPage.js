@@ -23,7 +23,6 @@ export default class SearchPage extends LightningElement {
 
     handleSelect(evt) {
         let selectedEntity = evt.detail.name;
-        console.log(selectedEntity);
         if (selectedEntity === "top_results") {
             this.displayTopResults();
         } else {
@@ -153,7 +152,8 @@ export default class SearchPage extends LightningElement {
     }
 
     sortResults(evt){
-        console.log("sorting by" + evt);
+        console.log('sorting by:');
+        console.log(evt.detail);
     }
 
     get hasMoreEntities() {
