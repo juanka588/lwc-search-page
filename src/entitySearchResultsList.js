@@ -105,6 +105,8 @@ export default class EntitySearchResultsList extends LightningElement {
     handleSort({ detail }) {
         this.sortedBy = detail.fieldName;
         this.sortDirection = detail.sortDirection;
+        this.dispatchEvent(new CustomEvent('sort', {detail}));
+        // local implementation of sort
         this.performSort(this.sortedBy, this.sortDirection);
     }
 
